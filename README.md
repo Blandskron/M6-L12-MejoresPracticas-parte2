@@ -1,6 +1,6 @@
-...# **Django Best Practices Project**
+# **Mejores Prácticas en Django**
 
-Este proyecto implementa una aplicación Django utilizando las mejores prácticas descritas en el documento de referencia. Se enfoca en la creación de entornos virtuales, el uso de variables de entorno, la configuración adecuada de plantillas, la implementación de modelos abstractos, el uso de campos booleanos y choices, y una estructura organizada del proyecto.
+Este proyecto implementa un ejemplo práctico basado en las mejores prácticas de Django, con un enfoque en la organización del código, el manejo de errores y la implementación de entornos virtuales, variables de entorno, y estructuras organizadas para plantillas y vistas.
 
 ---
 
@@ -9,25 +9,24 @@ Este proyecto implementa una aplicación Django utilizando las mejores práctica
 1. **Redirección Automática**:
    - La URL base (`/`) redirige automáticamente a `/home/`.
 
-2. **Gestión de Artículos**:
-   - CRUD completo para gestionar artículos con estados predefinidos utilizando choices.
-   - Implementación de modelos abstractos para evitar repetición de código.
+2. **Manejo de Errores**:
+   - Implementación de una página personalizada para el error 404 con un mensaje amigable: **"Creo que te perdiste esto"**.
 
-3. **Buenas Prácticas de Django**:
-   - Uso de entornos virtuales para un entorno aislado.
-   - Configuración de variables sensibles con `django-environ`.
-   - Organización y orden recomendado para imports y modelos.
+3. **Gestión de Entornos y Configuración Segura**:
+   - Uso de entornos virtuales y configuración mediante `django-environ`.
+   - Separación de configuraciones sensibles a través de variables de entorno.
 
-4. **Estructura de Plantillas**:
-   - Plantillas organizadas a nivel de aplicación y proyecto.
+4. **Buenas Prácticas**:
+   - Estructura clara de plantillas y vistas.
+   - Uso de `ALLOWED_HOSTS` y manejo de configuraciones para entornos de producción.
 
 ---
 
 ## **Requisitos Previos**
 
 - Python 3.8 o superior.
-- Django 4.0 o superior.
-- django-environ.
+- Django 5.1.4 o superior.
+- django-environ para manejar variables de entorno.
 
 ---
 
@@ -35,8 +34,8 @@ Este proyecto implementa una aplicación Django utilizando las mejores práctica
 
 ### **1. Clonar el Repositorio**
 ```bash
-git clone https://github.com/tu-usuario/django-best-practices.git
-cd django-best-practices
+git clone https://github.com/tu-usuario/mejores-practicas-django.git
+cd mejores-practicas-django
 ```
 
 ### **2. Crear un Entorno Virtual**
@@ -52,9 +51,10 @@ pip install -r requirements.txt
 
 ### **4. Configurar Variables de Entorno**
 Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+
 ```
 SECRET_KEY=super-secret-key
-DEBUG=True
+DEBUG=False
 ALLOWED_HOSTS=127.0.0.1,localhost
 DATABASE_URL=sqlite:///db.sqlite3
 ```
@@ -79,22 +79,21 @@ python manage.py runserver
 
 ## **Uso**
 
-### **Redirección Automática**
-- Cuando accedes a la URL base (`/`), serás redirigido automáticamente a `/home/`.
-
-### **Gestión de Artículos**
-- Accede al sitio administrativo en [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) para gestionar artículos.
-- Los artículos tienen estados predefinidos (`NEW`, `VERIFIED`, `PUBLISHED`) que se manejan con choices.
-
 ### **Página Principal**
 - Accede a la página principal en [http://127.0.0.1:8000/home/](http://127.0.0.1:8000/home/).
+
+### **Manejo del Error 404**
+- Intenta acceder a una URL inexistente, como [http://127.0.0.1:8000/xyz](http://127.0.0.1:8000/xyz), y verás la página personalizada con el mensaje **"Creo que te perdiste esto"**.
+
+### **Gestión de Usuarios y Datos**
+- Accede al sitio administrativo en [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) para gestionar datos y usuarios.
 
 ---
 
 ## **Estructura del Proyecto**
 
 ```
-config/
+mejores-practicas-django/
 ├── config/
 │   ├── __init__.py
 │   ├── asgi.py
@@ -113,6 +112,15 @@ config/
 │   ├── tests.py
 │   ├── views.py
 │   ├── urls.py
+├── error404/
+│   ├── templates/
+│   │   ├── error404/
+│   │   │   └── 404.html
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── views.py
+│   ├── tests.py
 ├── manage.py
 ├── env/
 └── requirements.txt
@@ -122,39 +130,34 @@ config/
 
 ## **Funciones Implementadas**
 
-### **1. Modelos**
-- **BaseModel**:
-  - Modelo abstracto que incluye campos comunes (`state`, `created`, `modified`).
-- **Article**:
-  - Modelo que representa un artículo con estados definidos por choices (`NEW`, `VERIFIED`, `PUBLISHED`).
+### **1. Manejo de Errores**
+- Personalización del error 404 con una página amigable.
 
-### **2. Sitio Administrativo**
-- Personalización del sitio administrativo para buscar, filtrar y listar artículos.
+### **2. Redirección Automática**
+- La URL base (`/`) redirige automáticamente a `/home/`.
 
-### **3. Variables de Entorno**
-- Uso de `django-environ` para separar configuraciones sensibles.
-
-### **4. Redirección**
-- Redirección automática desde `/` a `/home/`.
+### **3. Configuración Segura**
+- Uso de variables de entorno para manejar configuraciones sensibles, como `SECRET_KEY` y `ALLOWED_HOSTS`.
 
 ---
 
-## **Pruebas y Depuración**
+## **Pruebas**
 
-1. Verifica que las redirecciones funcionan correctamente:
-   - Accede a [http://127.0.0.1:8000/](http://127.0.0.1:8000/) y asegúrate de ser redirigido a `/home/`.
+1. **Página Principal**:
+   - Asegúrate de que `/` redirige correctamente a `/home/`.
 
-2. Asegúrate de que los modelos aparecen en el sitio administrativo:
-   - Crea y edita artículos desde el sitio administrativo.
+2. **Error 404**:
+   - Intenta acceder a una ruta no existente para validar la página personalizada.
 
-3. Valida que los estados de los artículos (`NEW`, `VERIFIED`, `PUBLISHED`) se manejan correctamente.
+3. **Modo de Producción**:
+   - Configura `DEBUG=False` y verifica que `ALLOWED_HOSTS` está correctamente configurado.
 
 ---
 
 ## **Archivo `requirements.txt`**
 
 ```plaintext
-django==4.2.5
+django==5.1.4
 django-environ==0.10.0
 ```
 
